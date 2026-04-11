@@ -8,7 +8,6 @@ import {
   getFirestore, collection, addDoc, doc, updateDoc, deleteDoc,
   onSnapshot, query, orderBy, serverTimestamp, setDoc, getDoc
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-h
 // ── CONFIGURE YOUR FIREBASE PROJECT BELOW ──────────────────────
 // 1. Go to https://console.firebase.google.com
 // 2. Create a project → Add a web app → copy the firebaseConfig here
