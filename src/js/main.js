@@ -2038,15 +2038,17 @@ window.openRefundOffsetModal = function(sid, payerId, payerName, refundAmt){
           if(!incl.includes(aid))return sum;
           return sum+Math.round((amt/incl.length)*100)/100;
         },0);
-        return fs>0?fs:(parseFloat(ss.perHead)||0);
+        return fs; // if excluded from all expenses, share is 0
       })();
       if(!sMyShare) return;
 
       const sExpPaid=sExpPayer[aid]||0;
       const sNetRef=sExpPaid-sMyShare;
       if(sNetRef>0){
-        // Net expense payer — gains carry credit
-        carry+=sNetRef;
+        // Net expense payer — credit is only the UNRECOVERED portion (netRef minus already-applied refunds)
+        const sRefundAlreadyApplied=sPay?parseFloat(sPay.refundApplied)||0:0;
+        const sCreditOffset=sPay?parseFloat(sPay.creditOffsetApplied)||0:0;
+        carry+=Math.max(0,sNetRef-sRefundAlreadyApplied)+(sCreditOffset>0.005?sCreditOffset:0);
         return;
       }
 
