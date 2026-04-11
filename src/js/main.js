@@ -8,7 +8,7 @@ import {
   getFirestore, collection, addDoc, doc, updateDoc, deleteDoc,
   onSnapshot, query, orderBy, serverTimestamp, setDoc, getDoc
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-
+h
 // ── CONFIGURE YOUR FIREBASE PROJECT BELOW ──────────────────────
 // 1. Go to https://console.firebase.google.com
 // 2. Create a project → Add a web app → copy the firebaseConfig here
@@ -2024,7 +2024,7 @@ window.openRefundOffsetModal = function(sid, payerId, payerName, refundAmt){
       const sNetRef=sExpPaid-sMyShare;
       if(sNetRef>0) return; // also a net expense payer — skip
       const sPay=(ss.payments||[]).find(function(p){return p.memberId===aid;});
-      const sPaid=sPay?parseFloat(sPay.amountPaid)||0:0;
+      const sPaid=sPay?(parseFloat(sPay.amountPaid)||0)+(parseFloat(sPay.creditOffsetApplied)||0):0;
       const sOwed=Math.max(0,sMyShare-sExpPaid);
       const sBal=sOwed-sPaid;
       if(sBal>0.005){
