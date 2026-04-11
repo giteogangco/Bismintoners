@@ -1998,15 +1998,37 @@ window.openRefundOffsetModal = function(sid, payerId, payerName, refundAmt){
   // Group by member — show net balance across all sessions
   const memberDebts = {}; // memberId -> {nm, totalBal, sessions:[{sid,label,bal,paid,owed}]}
 
-  STATE.sessions.forEach(function(ss){
-    const sAtt=ss.attendees||[];
-    const sExp=ss.expenses||[];
-    if(!sAtt.length) return;
-    const sExpPayer={};
-    sExp.forEach(function(e){ if(e.paidBy) sExpPayer[e.paidBy]=(sExpPayer[e.paidBy]||0)+(parseFloat(e.amount)||0); });
+  // Sort sessions by date to apply carry credits in chronological order
+  const sortedSessions = STATE.sessions.slice().sort(function(a,b){return new Date(a.date)-new Date(b.date);});
 
-    sAtt.forEach(function(aid){
-      if(aid===payerId) return;
+  // Collect all unique attendee IDs (excluding payer)
+  const allAids = {};
+  sortedSessions.forEach(function(ss){
+    (ss.attendees||[]).forEach(function(aid){ if(aid!==payerId) allAids[aid]=true; });
+  });
+
+  // For each member, compute carry-aware balance across sessions
+  Object.keys(allAids).forEach(function(aid){
+    let carry=0; // accumulated credit from overpayments / refund-offsets / creditOffsetApplied
+
+    sortedSessions.forEach(function(ss){
+      const sAtt=ss.attendees||[];
+      const sExp=ss.expenses||[];
+      const sPay=(ss.payments||[]).find(function(p){return p.memberId===aid;});
+
+      if(!sAtt.includes(aid)){
+        // Not an attendee — but may have a non-attendee creditOffsetApplied stored here
+        if(sPay){
+          const coa=parseFloat(sPay.creditOffsetApplied)||0;
+          if(coa>0.005) carry+=coa;
+        }
+        return;
+      }
+
+      if(!sAtt.length) return;
+      const sExpPayer={};
+      sExp.forEach(function(e){ if(e.paidBy) sExpPayer[e.paidBy]=(sExpPayer[e.paidBy]||0)+(parseFloat(e.amount)||0); });
+
       // Use includedPlayers-aware share (consistent with renderChipinBody)
       const sMyShare=(function(){
         if(!sExp.length) return parseFloat(ss.perHead)||0;
@@ -2019,13 +2041,37 @@ window.openRefundOffsetModal = function(sid, payerId, payerName, refundAmt){
         return fs>0?fs:(parseFloat(ss.perHead)||0);
       })();
       if(!sMyShare) return;
+
       const sExpPaid=sExpPayer[aid]||0;
       const sNetRef=sExpPaid-sMyShare;
-      if(sNetRef>0) return; // also a net expense payer — skip
-      const sPay=(ss.payments||[]).find(function(p){return p.memberId===aid;});
+      if(sNetRef>0){
+        // Net expense payer — gains carry credit
+        carry+=sNetRef;
+        return;
+      }
+
       const sPaid=sPay?(parseFloat(sPay.amountPaid)||0)+(parseFloat(sPay.creditOffsetApplied)||0):0;
+      const sRefund=sPay?parseFloat(sPay.refundApplied)||0:0;
       const sOwed=Math.max(0,sMyShare-sExpPaid);
-      const sBal=sOwed-sPaid;
+      const sBalRaw=sOwed-sPaid-sRefund;
+
+      if(sBalRaw<=0){
+        // Fully paid directly — any overpayment becomes carry
+        carry+=Math.max(0,-sBalRaw);
+        return;
+      }
+
+      // Apply carry credit to reduce this session's balance
+      if(carry>=sBalRaw-0.005){
+        // Carry covers this session fully
+        carry=Math.max(0,carry-sBalRaw);
+        return;
+      }
+
+      // Still owes after carry — net balance is sBalRaw minus available carry
+      const sBal=sBalRaw-carry;
+      carry=0;
+
       if(sBal>0.005){
         const m=STATE.members.find(function(x){return x.id===aid;});
         if(!memberDebts[aid]) memberDebts[aid]={aid, nm:m?m.name:'?', totalBal:0, sessions:[]};
@@ -2035,8 +2081,8 @@ window.openRefundOffsetModal = function(sid, payerId, payerName, refundAmt){
     });
   });
 
-  const eligiblePlayers = Object.values(memberDebts).sort((a,b)=>b.totalBal-a.totalBal)
-    .map(d=>({...d, remaining:d.totalBal}));
+  const eligiblePlayers = Object.values(memberDebts).sort(function(a,b){return b.totalBal-a.totalBal;})
+    .map(function(d){return Object.assign({},d,{remaining:d.totalBal});});
 
   // Collect projects where OTHER members have outstanding balances (payer can offset credit here too)
   const eligibleProjects = []; // [{pid, pname, mid, mname, due, paid, bal}]
