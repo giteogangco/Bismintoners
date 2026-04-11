@@ -256,7 +256,7 @@ function renderPage(page){
 }
 
 function refreshCurrentPage(){
-  const active=document.querySelector('.bn-item.active');
+  const active=document.querySelector('.bn-item.active, .more-item.active');
   if(active&&active.dataset.page) renderPage(active.dataset.page);
 }
 
