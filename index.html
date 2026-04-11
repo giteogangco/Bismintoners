@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<title>BISMINTONERS — Badminton Club</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Rajdhani:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;1,700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/src/css/main.css"/>
+</head>
+<body>
+
+<!-- SVG Sport Icon Sprite (inline for performance) -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <!-- dashboard / pulse chart -->
+  <symbol id="si-dashboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter">
+    <polyline points="2,18 7,11 11,14 16,7 22,10"/>
+    <line x1="2" y1="20" x2="22" y2="20"/>
+    <line x1="2" y1="20" x2="2" y2="4"/>
+  </symbol>
+  <!-- queue / lightning bolt -->
+  <symbol id="si-queue" viewBox="0 0 24 24" fill="currentColor">
+    <polygon points="13,2 4,14 11,14 11,22 20,10 13,10"/>
+  </symbol>
+  <!-- shuttlecock -->
+  <symbol id="si-shuttle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+    <circle cx="12" cy="7" r="3"/>
+    <line x1="12" y1="10" x2="12" y2="20"/>
+    <line x1="8" y1="14" x2="16" y2="14"/>
+    <line x1="6" y1="18" x2="18" y2="18"/>
+    <line x1="9" y1="20" x2="15" y2="20"/>
+  </symbol>
+  <!-- chipin / coin stack -->
+  <symbol id="si-pay" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+    <ellipse cx="12" cy="7" rx="8" ry="3"/>
+    <path d="M4 7v4c0 1.66 3.58 3 8 3s8-1.34 8-3V7"/>
+    <path d="M4 11v4c0 1.66 3.58 3 8 3s8-1.34 8-3v-4"/>
+  </symbol>
+  <!-- expenses / receipt -->
+  <symbol id="si-costs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+    <rect x="4" y="2" width="14" height="20" rx="0"/>
+    <line x1="8" y1="7" x2="16" y2="7"/>
+    <line x1="8" y1="11" x2="14" y2="11"/>
+    <line x1="8" y1="15" x2="12" y2="15"/>
+  </symbol>
+  <!-- stats / podium -->
+  <symbol id="si-stats" viewBox="0 0 24 24" fill="currentColor">
+    <rect x="2" y="12" width="5" height="10"/>
+    <rect x="9" y="7" width="6" height="15"/>
+    <rect x="17" y="9" width="5" height="13"/>
+  </symbol>
+  <!-- members / jersey -->
+  <symbol id="si-members" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+    <path d="M3 7l4-3h3c0 1.66 1.34 3 3 3s3-1.34 3-3h3l4 3-3 3v11H6V10L3 7z"/>
+  </symbol>
+  <!-- projects / trophy -->
+  <symbol id="si-projects" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+    <path d="M6 2h12v8a6 6 0 01-12 0V2z"/>
+    <path d="M6 6H2V8a4 4 0 004 4"/>
+    <path d="M18 6h4V8a4 4 0 01-4 4"/>
+    <line x1="12" y1="16" x2="12" y2="20"/>
+    <line x1="8" y1="20" x2="16" y2="20"/>
+  </symbol>
+  <!-- history / stopwatch -->
+  <symbol id="si-history" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+    <circle cx="12" cy="13" r="8"/>
+    <polyline points="12,9 12,13 15,15"/>
+    <line x1="10" y1="2" x2="14" y2="2"/>
+    <line x1="12" y1="2" x2="12" y2="5"/>
+  </symbol>
+  <!-- settings / crosshair -->
+  <symbol id="si-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+    <circle cx="12" cy="12" r="3"/>
+    <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M19.07 4.93l-2.12 2.12M7.05 16.95l-2.12 2.12"/>
+  </symbol>
+  <!-- more / grid -->
+  <symbol id="si-more" viewBox="0 0 24 24" fill="currentColor">
+    <rect x="4" y="4" width="5" height="5" rx="0"/>
+    <rect x="15" y="4" width="5" height="5" rx="0"/>
+    <rect x="4" y="15" width="5" height="5" rx="0"/>
+    <rect x="15" y="15" width="5" height="5" rx="0"/>
+  </symbol>
+  <!-- crown / superadmin -->
+  <symbol id="si-crown" viewBox="0 0 24 24" fill="currentColor">
+    <polygon points="2,20 5,8 10,14 12,6 14,14 19,8 22,20"/>
+    <rect x="2" y="20" width="20" height="2"/>
+  </symbol>
+  <!-- shield / admin -->
+  <symbol id="si-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+    <path d="M12 2L3 7v6c0 5 3.9 9.7 9 11 5.1-1.3 9-6 9-11V7L12 2z"/>
+    <polyline points="9,12 11,14 15,10"/>
+  </symbol>
+  <!-- player -->
+  <symbol id="si-player" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+    <circle cx="12" cy="7" r="4"/>
+    <path d="M2 21c0-5 4-8 10-8s10 3 10 8"/>
+  </symbol>
+  <!-- eye / guest -->
+  <symbol id="si-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+    <circle cx="12" cy="12" r="3"/>
+  </symbol>
+</svg>
+
+<div id="cfgBanner" style="display:none">▲ FIREBASE NOT CONFIGURED — Edit src/js/firebase.js</div>
+
+<!-- ===== LOGIN ===== -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-title">BISMINTONERS</div>
+      <div class="login-logo-sub">⚡ Badminton Club Management ⚡</div>
+    </div>
+    <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);font-family:'Barlow Condensed',sans-serif;margin-bottom:8px">Select Role</div>
+    <div class="role-grid" id="roleGrid">
+      <div class="role-btn" data-role="superadmin" onclick="selectRole(this)"><span class="role-icon"><svg width="22" height="22"><use href="#si-crown"/></svg></span>Super Admin</div>
+      <div class="role-btn" data-role="admin" onclick="selectRole(this)"><span class="role-icon"><svg width="22" height="22"><use href="#si-shield"/></svg></span>Admin</div>
+      <div class="role-btn" data-role="member" onclick="selectRole(this)"><span class="role-icon"><svg width="22" height="22"><use href="#si-player"/></svg></span>Member</div>
+      <div class="role-btn" data-role="guest" onclick="selectRole(this)"><span class="role-icon"><svg width="22" height="22"><use href="#si-eye"/></svg></span>Guest</div>
+    </div>
+    <div id="memberSelectWrap" style="display:none;margin-bottom:14px">
+      <label class="form-label">Select Your Name</label>
+      <select class="form-select" id="memberLoginSelect"><option value="">— choose —</option></select>
+    </div>
+    <div class="pin-group" id="pinGroup" style="display:none">
+      <div class="pin-label">Enter Passcode</div>
+      <div class="pin-inputs">
+        <input class="pin-input" maxlength="1" id="p0" oninput="pinNext(0)" inputmode="numeric"/>
+        <input class="pin-input" maxlength="1" id="p1" oninput="pinNext(1)" inputmode="numeric"/>
+        <input class="pin-input" maxlength="1" id="p2" oninput="pinNext(2)" inputmode="numeric"/>
+        <input class="pin-input" maxlength="1" id="p3" oninput="pinNext(3)" inputmode="numeric"/>
+      </div>
+    </div>
+    <div class="login-error" id="loginError"></div>
+    <button class="btn btn-primary btn-block" style="font-size:15px;padding:14px;letter-spacing:3px;font-family:'Russo One',sans-serif" onclick="doLogin()">ENTER COURT ▶</button>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="appWrap" style="display:none">
+  <header id="appHeader">
+    <div class="header-logo">
+      <svg width="18" height="18" style="margin-right:6px;vertical-align:middle;filter:drop-shadow(0 0 6px rgba(232,255,0,0.4))"><use href="#si-shuttle"/></svg>BISMINTONERS
+    </div>
+    <div class="header-role" id="hRole"></div>
+    <div class="header-user" id="hUser"></div>
+    <button class="logout-btn" onclick="doLogout()">Logout</button>
+  </header>
+  <main id="appMain"></main>
+</div>
+
+<!-- ===== BOTTOM NAV ===== -->
+<nav id="bottomNav" style="display:none"></nav>
+
+<!-- ===== MORE MENU ===== -->
+<div id="moreMenu"></div>
+<div id="moreOverlay" style="position:fixed;inset:0;z-index:299;display:none" onclick="closeMoreMenu()"></div>
+
+<div id="toast"></div>
+
+<!-- ============================================================ MODALS ============================================================ -->
+
+<!-- Member Modal -->
+<div class="modal-overlay" id="memberModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="memberModalTitle">Add Member</div>
+      <button class="modal-close" onclick="closeModal('memberModal')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="mfName" placeholder="Juan dela Cruz" autocomplete="off"/></div>
+      <div class="form-group"><label class="form-label">Nickname</label><input class="form-input" id="mfNick" placeholder="JDC" autocomplete="off"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Skill Level</label>
+        <select class="form-select" id="mfSkill">
+          <option value="beginner">Beginner</option>
+          <option value="intermediate" selected>Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Weight (kg)</label><input class="form-input" id="mfWeight" type="number" min="30" max="200" placeholder="70" step="0.1"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="mfPhone" placeholder="+971 50 000 0000" autocomplete="off"/></div>
+      <div class="form-group"><label class="form-label">Contact / Email</label><input class="form-input" id="mfContact" placeholder="email or other contact" autocomplete="off"/></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('memberModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveMember()">Save Member</button>
+    </div>
+  </div>
+</div>
+
+<!-- Session Modal -->
+<div class="modal-overlay" id="sessionModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="sessionModalTitle">New Session</div>
+      <button class="modal-close" onclick="closeModal('sessionModal')">✕</button>
+    </div>
+    <div class="form-section">Session Details</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Date *</label><input class="form-input" id="sfDate" type="date"/></div>
+      <div class="form-group"><label class="form-label">Venue</label><input class="form-input" id="sfVenue" placeholder="Sports Hall" autocomplete="off"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Courts</label><input class="form-input" id="sfCourts" type="number" min="1" max="10" value="2"/></div>
+      <div class="form-group"><label class="form-label">Adv Battle Every N Matches (0=off)</label><input class="form-input" id="sfAdvInterval" type="number" min="0" max="20" value="0" placeholder="0"/></div>
+    </div>
+    <div class="form-group"><label class="form-label">Notes</label><input class="form-input" id="sfNotes" placeholder="Optional session notes" autocomplete="off"/></div>
+    <div class="form-section">Players</div>
+    <div id="sfAttendees" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('sessionModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveSession()">Start Session</button>
+    </div>
+  </div>
+</div>
+
+<!-- Late Player Modal -->
+<div class="modal-overlay" id="latePlayerModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">Add Player to Queue</div>
+      <button class="modal-close" onclick="closeModal('latePlayerModal')">✕</button>
+    </div>
+    <div class="alert alert-info">▶ Selecting players here adds them to the END of the current queue. The match schedule will be regenerated.</div>
+    <div id="lpChips" style="display:flex;flex-wrap:wrap;gap:6px;margin:12px 0"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('latePlayerModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveLatePlayers()">Add to Queue</button>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Match Modal -->
+<div class="modal-overlay" id="customMatchModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">◈ Custom Match</div>
+      <button class="modal-close" onclick="closeModal('customMatchModal')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Match Type</label>
+      <select class="form-select" id="cmType">
+        <option value="regular">▶ Regular</option>
+        <option value="advanced">⚡ Advanced Battle</option>
+      </select>
+    </div>
+    <div class="form-section">Team A</div>
+    <div id="cmTeamA" style="display:flex;flex-direction:column;gap:5px;margin-bottom:10px"></div>
+    <div class="form-section">Team B</div>
+    <div id="cmTeamB" style="display:flex;flex-direction:column;gap:5px;margin-bottom:10px"></div>
+    <div class="form-section">Add Player</div>
+    <div id="cmAvailPlayers" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('customMatchModal')">Cancel</button>
+      <button class="btn btn-primary" id="cmSaveBtn" onclick="saveCustomMatch()">Start Match</button>
+    </div>
+  </div>
+</div>
+
+<!-- Expense Modal -->
+<div class="modal-overlay" id="expenseModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="expenseModalTitle">Log Expense</div>
+      <button class="modal-close" onclick="STATE.editingExpenseId=null;closeModal('expenseModal')">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">Category</label>
+      <select class="form-select" id="efCat">
+        <option value="court">▣ Court</option>
+        <option value="shuttle">▶ Shuttle</option>
+        <option value="food">◆ Food</option>
+        <option value="equipment">◈ Equipment</option>
+        <option value="other">◇ Other</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Amount (AED) *</label><input class="form-input" id="efAmt" type="number" min="0" step="0.01" placeholder="0.00"/></div>
+      <div class="form-group"><label class="form-label">Paid By</label>
+        <select class="form-select" id="efPayer"></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="efDate" type="date"/></div>
+      <div class="form-group"><label class="form-label">Note</label><input class="form-input" id="efNote" placeholder="e.g. 3 tubes shuttles" autocomplete="off"/></div>
+    </div>
+    <div class="form-group"><label class="form-label">Split Among</label><div id="efPlayers" style="display:flex;flex-wrap:wrap;gap:6px"></div></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="STATE.editingExpenseId=null;closeModal('expenseModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveExpense()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Pay Modal -->
+<div class="modal-overlay" id="payModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="payModalTitle">◈ Record Payment</div>
+      <button class="modal-close" onclick="closeModal('payModal')">✕</button>
+    </div>
+    <div id="payModalBody"></div>
+  </div>
+</div>
+
+<!-- Project Modal -->
+<div class="modal-overlay" id="projectModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="projModalTitle">New Project / Kitty</div>
+      <button class="modal-close" onclick="closeModal('projectModal')">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">Project Name *</label><input class="form-input" id="pfName" placeholder="Racket Fund" autocomplete="off"/></div>
+    <div class="form-group"><label class="form-label">Description</label><input class="form-input" id="pfDesc" placeholder="Group racket purchase" autocomplete="off"/></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Fixed Amount / Member (AED)</label><input class="form-input" id="pfFixed" type="number" min="0" step="0.01" placeholder="0.00"/></div>
+      <div class="form-group"><label class="form-label">Total Cost (AED)</label><input class="form-input" id="pfTotal" type="number" min="0" step="0.01" placeholder="0.00"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Target Date</label><input class="form-input" id="pfDate" type="date"/></div>
+      <div class="form-group"><label class="form-label">Status</label>
+        <select class="form-select" id="pfStatus">
+          <option value="active">Active</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-section">Members</div>
+    <div id="pfMembers" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('projectModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProject()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">◈ Settings</div>
+      <button class="modal-close" onclick="closeModal('settingsModal')">✕</button>
+    </div>
+    <div id="settingsBody"></div>
+  </div>
+</div>
+
+<!-- Detail / Stats Modal -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="detailModalTitle"></div>
+      <button class="modal-close" onclick="closeModal('detailModal')">✕</button>
+    </div>
+    <div id="detailModalBody"></div>
+  </div>
+</div>
+
+<script type="module" src="/src/js/main.js"></script>
+</body>
+</html>
