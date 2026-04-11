@@ -50,8 +50,8 @@ const COLORS=['#00d4ff','#ffc433','#00e899','#ff4466','#ff8c00','#c084fc','#38bd
 function avatarColor(n){ let h=0;for(let c of(n||'?'))h=(h*31+c.charCodeAt(0))&0xffffffff;return COLORS[Math.abs(h)%COLORS.length]; }
 function initials(n){ return(n||'?').split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2); }
 function skillBadge(s){
-  if(s==='Advanced') return '<span class="badge badge-adv">ADV</span>';
-  if(s==='Intermediate') return '<span class="badge badge-int">INT</span>';
+  if(s?.toLowerCase()==='advanced') return '<span class="badge badge-adv">ADV</span>';
+  if(s?.toLowerCase()==='intermediate') return '<span class="badge badge-int">INT</span>';
   return '<span class="badge badge-beg">BEG</span>';
 }
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -908,7 +908,7 @@ function renderQueueBody(s){
 
     const nextMatchNum = completedMatches.length + activeMatches.length + scheduledQueue.length + 1;
     const isNextAdv = advInterval>0 && nextMatchNum % advInterval === 0;
-    const advPlayersAvail = att.filter(id=>{const m=STATE.members.find(x=>x.id===id);return m?.skill==='Advanced';}).length;
+    const advPlayersAvail = att.filter(id=>{const m=STATE.members.find(x=>x.id===id);return m?.skill?.toLowerCase()==='advanced';}).length;
 
     html += `<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
       <button class="btn btn-gold btn-sm" onclick="generateMatchup('${s.id}')" ${canGenerate?'':'disabled'}>
@@ -1117,7 +1117,7 @@ window.generateMatchup = async function(sid){
 
   let team1, team2, matchType;
   if(isAdvSlot){
-    const advPlayers = (s.attendees||[]).filter(id=>{const m=STATE.members.find(x=>x.id===id);return m?.skill==='Advanced';});
+    const advPlayers = (s.attendees||[]).filter(id=>{const m=STATE.members.find(x=>x.id===id);return m?.skill?.toLowerCase()==='advanced';});
     if(advPlayers.length>=4){
       const shuffled=[...advPlayers].sort(()=>Math.random()-0.5);
       team1=[shuffled[0],shuffled[1]];team2=[shuffled[2],shuffled[3]];
@@ -1162,7 +1162,7 @@ window.generateAllMatchups = async function(sid){
     const isAdvSlot = advInterval>0 && matchNum % advInterval === 0;
     let team1,team2,matchType;
     if(isAdvSlot){
-      const advPlayers=(s.attendees||[]).filter(id=>{const m=STATE.members.find(x=>x.id===id);return m?.skill==='Advanced';});
+      const advPlayers=(s.attendees||[]).filter(id=>{const m=STATE.members.find(x=>x.id===id);return m?.skill?.toLowerCase()==='advanced';});
       if(advPlayers.length>=4){
         const sh=[...advPlayers].sort(()=>Math.random()-0.5);
         team1=[sh[0],sh[1]];team2=[sh[2],sh[3]];matchType='advanced';
@@ -1215,7 +1215,7 @@ window.generate10Matches = async function(sid){
     let team1, team2, matchType;
 
     if(isAdvSlot){
-      const advPlayers = (s.attendees||[]).filter(id=>{ const m=STATE.members.find(x=>x.id===id); return m?.skill==='Advanced'; });
+      const advPlayers = (s.attendees||[]).filter(id=>{ const m=STATE.members.find(x=>x.id===id); return m?.skill?.toLowerCase()==='advanced'; });
       if(advPlayers.length>=4){
         const sh=[...advPlayers].sort(()=>Math.random()-0.5);
         team1=[sh[0],sh[1]]; team2=[sh[2],sh[3]]; matchType='advanced';
@@ -1383,7 +1383,7 @@ function buildUsedPairings(matches){
 function buildBalancedTeams(next4, usedPairings=new Set()){
   const sorted = next4.map(id=>{
     const m=STATE.members.find(x=>x.id===id);
-    const sv=m?.skill==='Advanced'?3:m?.skill==='Intermediate'?2:1;
+    const sv=m?.skill?.toLowerCase()==='advanced'?3:m?.skill?.toLowerCase()==='intermediate'?2:1;
     return {id,sv};
   }).sort((a,b)=>b.sv-a.sv);
 
