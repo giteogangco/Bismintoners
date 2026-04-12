@@ -2620,7 +2620,7 @@ function _buildPayDebts(mid){
         const incl=e.includedPlayers&&e.includedPlayers.length>0?e.includedPlayers:sAtt;
         if(!incl.includes(mid))return sum;
         return sum+Math.round((amt/incl.length)*100)/100;
-        return fs; // 0 if member excluded from all expensesHead)||0);
+        return fs; // 0 if excluded from all expenses
     })();
 
     if(!sAtt.includes(mid)){
