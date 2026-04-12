@@ -371,7 +371,7 @@ function gatherOutstanding(){
           if(!incl.includes(aid)) return sum;
           return sum+Math.round((amt/incl.length)*100)/100;
         },0);
-        return fs>0?fs:(parseFloat(s.perHead)||0);
+        return fs; // 0 if excluded from all expenses, perHead otherwise
       })();
       if(!myShare&&!expPayerTotals[aid]){ return; }
 
@@ -546,7 +546,7 @@ window.showOutstandingBreakdown = function(memberId, memberName){
         if(!incl.includes(memberId)) return sum;
         return sum+Math.round((amt/incl.length)*100)/100;
       },0);
-      return fs>0?fs:(parseFloat(s.perHead)||0);
+      return fs; // 0 if member excluded from all expenses
     })();
     const pay=(s.payments||[]).find(p=>p.memberId===memberId);
     const paid=pay?parseFloat(pay.amountPaid)||0:0;
@@ -2540,8 +2540,7 @@ window.autoSettleCarryOver = async function(sid, payerId, payerName, carryDebt){
         const incl=e.includedPlayers&&e.includedPlayers.length>0?e.includedPlayers:pAtt;
         if(!incl.includes(payerId))return sum;
         return sum+Math.round((amt/incl.length)*100)/100;
-      },0);
-      return fs>0?fs:(parseFloat(ps.perHead)||0);
+      return fs; // 0 if excluded from all expenses
     })();
     if(!pMyShare) continue;
 
@@ -2621,8 +2620,7 @@ function _buildPayDebts(mid){
         const incl=e.includedPlayers&&e.includedPlayers.length>0?e.includedPlayers:sAtt;
         if(!incl.includes(mid))return sum;
         return sum+Math.round((amt/incl.length)*100)/100;
-      },0);
-      return fs>0?fs:(parseFloat(s.perHead)||0);
+        return fs; // 0 if member excluded from all expensesHead)||0);
     })();
 
     if(!sAtt.includes(mid)){
@@ -3431,10 +3429,7 @@ function renderHistoryCard(s){
             const fs=expenses.reduce((sum,e)=>{
               const amt=parseFloat(e.amount)||0;if(!amt)return sum;
               const incl=e.includedPlayers&&e.includedPlayers.length>0?e.includedPlayers:att;
-              if(!incl.includes(m.id))return sum;
-              return sum+Math.round((amt/incl.length)*100)/100;
-            },0);
-            return fs>0?fs:perHead;
+      return fs; // 0 if excluded from all expenses
           })():0;
           const isExpPayer=expPaid>0&&expPaid>myShare;
           const owed=isExpPayer?0:Math.max(0,myShare-expPaid);
