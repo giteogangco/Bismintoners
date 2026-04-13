@@ -1901,8 +1901,13 @@ function renderChipinBody(s){
           const carryCredit=Math.max(0,-r.carryover);
           // Net return after clearing their own carry-over debt
           const effectiveTotal=Math.max(0,baseRefund-carryDebt+carryCredit);
-          const displayRefund=Math.max(0,effectiveTotal-alreadyApplied);
-          const fullySettled=alreadyApplied>=effectiveTotal-0.005&&effectiveTotal>0;
+          // If every non-expense-payer attendee has bal=0 (settled by cash OR credit),
+          // the expense payer is fully settled regardless of how refundApplied was recorded.
+          // This handles credit-chain payments (e.g. Mae's carryover credit covering Nikho)
+          // that don't directly increment refundApplied but still mean everyone has paid.
+          const allNonPayersSettled=rows.filter(rr=>!rr.isExpensePayer).every(rr=>rr.bal<0.005);
+          const displayRefund=allNonPayersSettled?0:Math.max(0,effectiveTotal-alreadyApplied);
+          const fullySettled=allNonPayersSettled||(alreadyApplied>=effectiveTotal-0.005&&effectiveTotal>0);
           // Carry-over that can be auto-settled from refund (not yet settled)
           const autoSettleable=carryDebt>0.005&&baseRefund>carryDebt;
           return `
