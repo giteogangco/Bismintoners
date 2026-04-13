@@ -3436,7 +3436,9 @@ function renderHistoryCard(s){
             const fs=expenses.reduce((sum,e)=>{
               const amt=parseFloat(e.amount)||0;if(!amt)return sum;
               const incl=e.includedPlayers&&e.includedPlayers.length>0?e.includedPlayers:att;
-      return fs; // 0 if excluded from all expenses
+              return sum+Math.round((amt/incl.length)*100)/100;
+            },0);
+            return fs>0?fs:perHead;
           })():0;
           const isExpPayer=expPaid>0&&expPaid>myShare;
           const owed=isExpPayer?0:Math.max(0,myShare-expPaid);
