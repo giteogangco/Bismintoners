@@ -2545,7 +2545,8 @@ window.autoSettleCarryOver = async function(sid, payerId, payerName, carryDebt){
         const incl=e.includedPlayers&&e.includedPlayers.length>0?e.includedPlayers:pAtt;
         if(!incl.includes(payerId))return sum;
         return sum+Math.round((amt/incl.length)*100)/100;
-      return fs; // 0 if excluded from all expenses
+      },0);
+      return fs>0?fs:parseFloat(s.perHead)||0;
     })();
     if(!pMyShare) continue;
 
@@ -2625,7 +2626,8 @@ function _buildPayDebts(mid){
         const incl=e.includedPlayers&&e.includedPlayers.length>0?e.includedPlayers:sAtt;
         if(!incl.includes(mid))return sum;
         return sum+Math.round((amt/incl.length)*100)/100;
-        return fs; // 0 if excluded from all expenses
+      },0);
+      return fs>0?fs:parseFloat(s.perHead)||0;
     })();
 
     if(!sAtt.includes(mid)){
