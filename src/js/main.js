@@ -8,9 +8,9 @@ import {
   getFirestore, collection, addDoc, doc, updateDoc, deleteDoc,
   onSnapshot, query, orderBy, serverTimestamp, setDoc, getDoc
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-// ── CONFIGURE YOUR FIREBASE PROJECT BELOW ──────────────────────
+// ── CONFIGURE YOUR FIREBASE PROJECT BELOW ──────────────────────h
 // 1. Go to https://console.firebase.google.com
-// 2. Create a project → Add a web app → copy the firebaseConfig here
+// 2. Create a project → Add a web app → copy the firebaseConfig hereh
 // 3. Enable Firestore Database (start in production mode)
 // 4. Add your domain to Firestore security rules or use test mode
 const firebaseConfig = {
@@ -546,7 +546,7 @@ window.showOutstandingBreakdown = function(memberId, memberName){
         if(!incl.includes(memberId)) return sum;
         return sum+Math.round((amt/incl.length)*100)/100;
       },0);
-      return fs; // 0 if member excluded from all expenses
+      return fs>0?fs:parseFloat(s.perHead)||0; // fall back to perHead if excluded from all expenses
     })();
     const pay=(s.payments||[]).find(p=>p.memberId===memberId);
     const paid=pay?parseFloat(pay.amountPaid)||0:0;
@@ -2043,7 +2043,7 @@ window.openRefundOffsetModal = function(sid, payerId, payerName, refundAmt){
           if(!incl.includes(aid))return sum;
           return sum+Math.round((amt/incl.length)*100)/100;
         },0);
-        return fs; // if excluded from all expenses, share is 0
+        return fs>0?fs:parseFloat(ss.perHead)||0; // fall back to perHead if excluded from all expenses
       })();
       if(!sMyShare) return;
 
