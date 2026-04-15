@@ -371,7 +371,7 @@ function gatherOutstanding(){
           if(!incl.includes(aid)) return sum;
           return sum+Math.round((amt/incl.length)*100)/100;
         },0);
-        return fs; // 0 if excluded from all expenses, perHead otherwise
+        return fs>0?fs:parseFloat(s.perHead)||0; // match _buildPayDebts: fall back to perHead if excluded from all expenses
       })();
       if(!myShare&&!expPayerTotals[aid]){ return; }
 
