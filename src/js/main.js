@@ -9,7 +9,7 @@ import {
   onSnapshot, query, orderBy, serverTimestamp, setDoc, getDoc
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 // ── CONFIGURE YOUR FIREBASE PROJECT BELOW ──────────────────────h
-// 1. Go to https://console.firebase.google.com
+// 1. Go to https://console.firebase.google.comh
 // 2. Create a project → Add a web app → copy the firebaseConfig hereh
 // 3. Enable Firestore Database (start in production mode)
 // 4. Add your domain to Firestore security rules or use test mode
@@ -371,7 +371,7 @@ function gatherOutstanding(){
           if(!incl.includes(aid)) return sum;
           return sum+Math.round((amt/incl.length)*100)/100;
         },0);
-        return fs>0?fs:parseFloat(s.perHead)||0; // match _buildPayDebts: fall back to perHead if excluded from all expenses
+        return fs; // if excluded from all expenses, owe 0 (not perHead)
       })();
       if(!myShare&&!expPayerTotals[aid]){ return; }
 
@@ -546,7 +546,7 @@ window.showOutstandingBreakdown = function(memberId, memberName){
         if(!incl.includes(memberId)) return sum;
         return sum+Math.round((amt/incl.length)*100)/100;
       },0);
-      return fs>0?fs:parseFloat(s.perHead)||0; // fall back to perHead if excluded from all expenses
+      return fs; // if excluded from all expenses, owe 0 (not perHead)
     })();
     const pay=(s.payments||[]).find(p=>p.memberId===memberId);
     const paid=pay?parseFloat(pay.amountPaid)||0:0;
@@ -1762,7 +1762,7 @@ function renderChipinBody(s){
           if(!incl.includes(memberId))return sum;
           return sum+Math.round((amt/incl.length)*100)/100;
         },0);
-        return fromExpenses>0?fromExpenses:(parseFloat(ps.perHead)||0);
+        return fromExpenses; // if excluded from all expenses, owe 0 (not perHead)
       })();
       if(!ppShare)return;
 
@@ -1827,7 +1827,7 @@ function renderChipinBody(s){
         if(!incl.includes(aid))return sum;
         return sum+Math.round((amt/incl.length)*100)/100;
       },0);
-      return fromExpenses>0?fromExpenses:perHead;
+      return fromExpenses; // if excluded from all expenses, owe 0 (not perHead)
     })();
     const netRefund=expPaid-myShare; // positive = group owes them cash back
     const isExpensePayer=expPaid>0&&netRefund>0;
@@ -2043,7 +2043,7 @@ window.openRefundOffsetModal = function(sid, payerId, payerName, refundAmt){
           if(!incl.includes(aid))return sum;
           return sum+Math.round((amt/incl.length)*100)/100;
         },0);
-        return fs>0?fs:parseFloat(ss.perHead)||0; // fall back to perHead if excluded from all expenses
+        return fs; // if excluded from all expenses, owe 0 (not perHead)
       })();
       if(!sMyShare) return;
 
@@ -2546,7 +2546,7 @@ window.autoSettleCarryOver = async function(sid, payerId, payerName, carryDebt){
         if(!incl.includes(payerId))return sum;
         return sum+Math.round((amt/incl.length)*100)/100;
       },0);
-      return fs>0?fs:parseFloat(s.perHead)||0;
+      return fs; // if excluded from all expenses, owe 0 (not perHead)
     })();
     if(!pMyShare) continue;
 
@@ -2627,7 +2627,7 @@ function _buildPayDebts(mid){
         if(!incl.includes(mid))return sum;
         return sum+Math.round((amt/incl.length)*100)/100;
       },0);
-      return fs>0?fs:parseFloat(s.perHead)||0;
+      return fs; // if excluded from all expenses, owe 0 (not perHead)
     })();
 
     if(!sAtt.includes(mid)){
@@ -3438,7 +3438,7 @@ function renderHistoryCard(s){
               const incl=e.includedPlayers&&e.includedPlayers.length>0?e.includedPlayers:att;
               return sum+Math.round((amt/incl.length)*100)/100;
             },0);
-            return fs>0?fs:perHead;
+            return fs; // if excluded from all expenses, owe 0 (not perHead)
           })():0;
           const isExpPayer=expPaid>0&&expPaid>myShare;
           const owed=isExpPayer?0:Math.max(0,myShare-expPaid);
